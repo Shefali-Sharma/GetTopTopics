@@ -3,7 +3,7 @@ import processing
 import sys
 app = Flask(__name__)
 
-Topics = ["2 slice toaster","asda","asdad","ad", "aa"]
+Topics = []
 
 @app.route('/')
 def home():
