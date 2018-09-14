@@ -19,15 +19,6 @@
       text-align: center;
       position: relative;
     }
-    .sandbox-correct-pronounciation-2 {
-      padding: 0 0 0 0;
-      visibility: hidden;
-    }
-    .heading-correct-pronounciation-2 {
-      margin: auto;
-      text-align: left;
-      position: relative;
-    }
     .btn-default{
       font-size: 20px;
       background: orange;
@@ -102,13 +93,8 @@
         </div>
       </div>
       <div id="errorAlert" class = "alert alert-danger" role = "alert"  text="Invalid Input"><p> Invalid Input </p></div>
-      <div id="topicListTag" class="sandbox sandbox-correct-pronounciation-2">
-        <h1 class="heading heading-correct-pronounciation-2">
-          Topics
-        </h1>
-      </div>
-
       <div name = "topicList">
+
         <ul class = "list-group">
           {% for topic in topicsList %}
             <li class = "list-group-item list-group-item-info">{{ topic }}</li>
@@ -129,9 +115,8 @@ function isUrlValid(url) {
 
 
 $("#search").click(function(event) {
-  if (isUrlValid($('#inputURL').val()) ) {
+  if (isUrlValid($('#inputURL').val())) {
     $('#errorAlert').css("visibility", "hidden");
-    $('#topicListTag').css("visibility", "visible");
     $.ajax({
       data : {
         input : $('#inputURL').val()
@@ -146,7 +131,6 @@ $("#search").click(function(event) {
   }
   else{
       $('#errorAlert').css("visibility", "visible");
-      $('#topicListTag').css("visibility", "hidden");
   }
 
    event.preventDefault();
