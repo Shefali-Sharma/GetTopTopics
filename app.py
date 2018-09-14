@@ -3,7 +3,7 @@ import processing
 import sys
 app = Flask(__name__)
 
-Topics = []
+ErrorMessage = ['ERROR: No topics retreived. Please try another URL.']
 
 @app.route('/')
 def home():
@@ -29,20 +29,23 @@ def getdata():
         with open("text.log",'r') as f:
             a = list(processing.top_keywords_from_url(f.readline().strip(),10).to_dict()["index"].values())
             if not a:
-                return render_template('home.html', topicsList = [])
+                return render_template('home.html', topicsList = ErrorMessage)
         return render_template('home.html', topicsList = a)
     except NameError as err:
         print ('NameError in this data: ' + str(err))
-        return render_template('home.html', topicsList = [])
+        return render_template('home.html', topicsList = ErrorMessage)
     except TypeError as err:
         print ('TypeError in this data: ' + str(err))
-        return render_template('home.html', topicsList = [])
+        return render_template('home.html', topicsList = ErrorMessage)
     except ValueError as err:
         print ('ValueError in this data: ' + str(err))
-        return render_template('home.html', topicsList = [])
+        return render_template('home.html', topicsList = ErrorMessage)
+    except AttributeError as err:
+        print ('AttributeError in this data: ' + str(err))
+        return render_template('home.html', topicsList = ErrorMessage)
     except:
         print ('Error encountered for this data: ' + str(sys.exc_info()[0]))
-        return render_template('home.html', topicsList = [])
+        return render_template('home.html', topicsList = ErrorMessage)
 
 
 @app.route('/about')
