@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>What is it about?</title>
+    <meta name = "viewport" content = "width=device-width, initial-scale = 1"/>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"/>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+    <style>
+    body{
+      background: #202a3f;
+    }
+    .container{
+      margin-top: 250px;
+    }
+    .btn-default{
+      font-size: 20px;
+      background: orange;
+      height: 50px;
+      width: 150px;
+    }
+    .form-control{
+      padding: 20px;
+      font-size: 20px;
+      height: 50px;
+    }
+    .list-group{
+      font-size: 20px;
+    }
+    </style>
+  </head>
+<body>
+
+  <div class = "container">
+    <form class="form-default">
+      <div class = "input-group">
+        <input type = "text" class = "form-control" placeholder = "Enter URL here" id = "inputURL">
+        <div class = "input-group-btn">
+          <button id="search" class = "btn btn-default" type = "submit" >
+            Search
+          </button>
+        </div>
+      </div>
+      <div name = "topicList">
+        <ul class = "list-group">
+          {% for topic in topicsList %}
+            <li class = "list-group-item list-group-item-info">{{ topic }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </form>
+  </div>
+  <p  id = "errorAlert" text = "Hi this is text"></p>
+</body>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+crossorigin="anonymous"></script>
+<!--
+//   $('form').on('submit', function(event) {
+//
+//     $.ajax({
+//       data : {
+//         input : $('inputURL').val()
+//       },
+//       type : 'POST',
+//       url: '/callback'
+//
+//     }); -->
+<script>
+$("#search").click(function(event) {
+   $.ajax({
+     data : {
+       input : $('#inputURL').val()
+     },
+     type : 'POST',
+     url: '/callback',
+     success: function(data) {
+          $("body").load("/data");
+          console.log('success');
+    }
+   })
+   .done(function(){
+
+   });
+   event.preventDefault();
+});
+
+</script>
+</html>
