@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-import processing
+from core.Processing import Processing
 import sys
 app = Flask(__name__)
 
@@ -27,7 +27,7 @@ def callback():
 def getdata():
     try:
         with open("text.log",'r') as f:
-            a = list(processing.top_keywords_from_url(f.readline().strip(),10).to_dict()["index"].values())
+            a = list(Processing.top_keywords_from_url(f.readline().strip(),10).to_dict()["index"].values())
             if not a:
                 return render_template('home.html', topicsList = ErrorMessage)
         return render_template('home.html', topicsList = a)
