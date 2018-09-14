@@ -9,12 +9,17 @@ from nltk.corpus import stopwords
 from nltk.stem.wordnet import WordNetLemmatizer
 from nltk.util import ngrams
 import re
+from core.Logger import Logger
 import sys
+import os
 from collections import Counter
 from pandas import DataFrame
 
 class Processing:
-    def top_keywords_from_url(url, no_of_relevant_topics):
+    def __init__(self):
+        self.loggerObj = Logger()
+
+    def top_keywords_from_url(self, url, no_of_relevant_topics):
         try:
             REMOVE = {'style', 'script', 'head', 'title','[document]'}
             def visible_texts(soup):
@@ -36,14 +41,22 @@ class Processing:
             df_bigram[0] = df_bigram[0]*bigram_weight
             return df_unigram.append(df_bigram).sort_values(by=0,ascending=False).reset_index(drop=True)[:no_of_relevant_topics]
         except NameError as err:
-            print ('NameError in this data: ' + str(err))
+            message = 'NameError in this data: ' + str(err)
+            self.loggerObj.error(os.path.basename(__file__), message)
             return []
         except TypeError as err:
-            print ('TypeError in this data: ' + str(err))
+            message = 'TypeError in this data: ' + str(err)
+            self.loggerObj.error(os.path.basename(__file__), message)
             return []
         except ValueError as err:
-            print ('ValueError in this data: ' + str(err))
+            message = 'ValueError in this data: ' + str(err)
+            self.loggerObj.error(os.path.basename(__file__), message)
+            return []
+        except AttributeError as err:
+            message = 'AttributeError in this data: ' + str(err)
+            self.loggerObj.error(os.path.basename(__file__), message)
             return []
         except:
-            print ('Error encountered for this data: ' + str(sys.exc_info()[0]))
+            message = 'Error encountered for this data: ' + str(sys.exc_info()[0])
+            self.loggerObj.error(os.path.basename(__file__), message)
             return []
