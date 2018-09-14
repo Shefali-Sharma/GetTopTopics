@@ -45,5 +45,13 @@ def getdata():
         return render_template('home.html', topicsList = [])
 
 
+@app.route('/about')
+def about():
+    return render_template('about.html', topicsList = Topics)
+
+@app.route('/contact')
+def contact():
+    return render_template('contact.html', topicsList = Topics)
+
 if __name__ == '__main__':
     app.run(debug = True)
