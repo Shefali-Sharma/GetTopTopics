@@ -2,7 +2,6 @@
 <html>
   <head>
     <title>Get Top Topics!</title>
-    <link rel="stylesheet" href="style.css" type="text/css" media="screen">
     <meta name = "viewport" content = "width=device-width, initial-scale = 1"/>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"/>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
@@ -20,6 +19,15 @@
       text-align: center;
       position: relative;
     }
+    .sandbox-correct-pronounciation-2 {
+      padding: 0 0 0 0;
+      visibility: hidden;
+    }
+    .heading-correct-pronounciation-2 {
+      margin: auto;
+      text-align: left;
+      position: relative;
+    }
     .btn-default{
       font-size: 20px;
       background: orange;
@@ -33,6 +41,13 @@
     }
     .list-group{
      font-size: 20px;
+   }
+   .alert-danger{
+     font-size: 20px;
+     font: orange;
+     height: 50px;
+     width: 150px;
+     visibility: hidden;
    }
     h1 {
       color: #fff;
@@ -86,6 +101,13 @@
           </button>
         </div>
       </div>
+      <div id="errorAlert" class = "alert alert-danger" role = "alert"  text="Invalid Input"><p> Invalid Input </p></div>
+      <div id="topicListTag" class="sandbox sandbox-correct-pronounciation-2">
+        <h1 class="heading heading-correct-pronounciation-2">
+          Topics
+        </h1>
+      </div>
+
       <div name = "topicList">
         <ul class = "list-group">
           {% for topic in topicsList %}
@@ -95,27 +117,38 @@
       </div>
     </form>
   </div>
-  <p  id = "errorAlert" text = "Hi this is text"></p>
 </body>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"
 integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
 crossorigin="anonymous"></script>
 <script>
-$("#search").click(function(event) {
-   $.ajax({
-     data : {
-       input : $('#inputURL').val()
-     },
-     type : 'POST',
-     url: '/callback',
-     success: function(data) {
-          $("body").load("/data");
-          console.log('success');
-    }
-   })
-   .done(function(){
 
+function isUrlValid(url) {
+    return /^(https?|s?ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(url);
+}
+
+
+$("#search").click(function(event) {
+  if (isUrlValid($('#inputURL').val()) ) {
+    $('#errorAlert').css("visibility", "hidden");
+    $('#topicListTag').css("visibility", "visible");
+    $.ajax({
+      data : {
+        input : $('#inputURL').val()
+      },
+      type : 'POST',
+      url: '/callback',
+      success: function(data) {
+           $("body").load("/data");
+     }
    });
+
+  }
+  else{
+      $('#errorAlert').css("visibility", "visible");
+      $('#topicListTag').css("visibility", "hidden");
+  }
+
    event.preventDefault();
 });
 
