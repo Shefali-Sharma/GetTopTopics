@@ -34,11 +34,15 @@
      font-size: 20px;
    }
    .alert-danger{
-     font-size: 20px;
-     font: orange;
-     height: 50px;
-     width: 150px;
+     padding: 10px;
+     font-family: 'Cardo', serif;
+     font-size: 15px;
+     height: 25px;
+     width: 100%;
      visibility: hidden;
+     background: #202a3f;
+     border-color: #202a3f;
+     color: white;
    }
     h1 {
       color: #fff;
@@ -58,24 +62,23 @@
       display: block;
       font-style:normal;
       padding-top: 0.1em;
-      text-shadow: 0.07em 0.07em 0 rgba(0, 0, 0, 0.1);
-      &::before, &::after {
-        content: "§";
-        display: inline-block;
-        -webkit-transform: rotate(90deg);
-        -moz-transform: rotate(90deg);
-        -o-transform: rotate(90deg);
-        -ms-transform: rotate(90deg);
-        transform: rotate(90deg);
-        opacity: 0.2;
-        margin: 0 0.6em;
-        font-size: 0.5em;
-      }
+    }
+
+    ul{
+      font-family: 'EB Garamond', serif;
+
+    }
+    li{
+      background-color: #4682B4;
+    }
+    .list-group-item{
+      background-color: #4682B4;
+      color: powderblue;
     }
     </style>
   </head>
 <body>
-<!-- <h1>Most Significant Words<br><span data-shadow-text="Get-Top-Topics">Get Top Topics</span><br></h1> -->
+
 <div class="sandbox sandbox-correct-pronounciation">
   <h1 class="heading heading-correct-pronounciation">
     Most Significant Words
@@ -92,12 +95,12 @@
           </button>
         </div>
       </div>
-      <div id="errorAlert" class = "alert alert-danger" role = "alert"  text="Invalid Input"><p> Invalid Input </p></div>
-      <div name = "topicList">
+      <div id="errorAlert" class = "alert alert-danger" role = "alert"  text="Unable to fetch topics for the Input."><p> Invalid Input </p></div>
+      <div id="topicListDiv" name = "topicList">
 
         <ul class = "list-group">
           {% for topic in topicsList %}
-            <li class = "list-group-item list-group-item-info">{{ topic }}</li>
+            <li class = "list-group-item">{{ topic }}</li>
           {% endfor %}
         </ul>
       </div>
@@ -131,6 +134,7 @@ $("#search").click(function(event) {
   }
   else{
       $('#errorAlert').css("visibility", "visible");
+      $('#topicListDiv').css("visibility", "hidden");
   }
 
    event.preventDefault();
