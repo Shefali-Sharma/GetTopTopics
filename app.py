@@ -18,7 +18,7 @@ def callback():
     try:
         with open("text.log",'w') as f:
             f.write(request.form['input'] + "\n")
-        return render_template('home.html', topicsList = Topics)
+        return render_template('home.html', topicsList = [])
     except:
         print ('Error encountered for this data: ' + str(sys.exc_info()[0]))
         return render_template('home.html', topicsList = [])
@@ -50,11 +50,11 @@ def getdata():
 
 @app.route('/about')
 def about():
-    return render_template('about.html', topicsList = Topics)
+    return render_template('about.html', topicsList = [])
 
 @app.route('/contact')
 def contact():
-    return render_template('contact.html', topicsList = Topics)
+    return render_template('contact.html', topicsList = [])
 
 if __name__ == '__main__':
     app.run(debug = True)
