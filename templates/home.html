@@ -1,1 +1,33 @@
 {% extends 'layout.html' %}
+
+{% block body %}
+
+<div class="sandbox sandbox-correct-pronounciation">
+  <h1 class="heading heading-correct-pronounciation">
+    Most Significant Words
+    <em>Get Top Topics</em>
+  </h1>
+</div>
+  <div class = "container">
+    <form class="form-default">
+      <div class = "input-group">
+        <input type = "text" class = "form-control" placeholder = "Enter URL here" id = "inputURL">
+        <div class = "input-group-btn">
+          <button id="search" class = "btn btn-default" type = "submit" >
+            Search
+          </button>
+        </div>
+      </div>
+      <div id="errorAlert" class = "alert alert-danger" role = "alert"  text="Unable to fetch topics for the Input."><p> Invalid Input </p></div>
+      <div id="topicListDiv" name = "topicList">
+
+        <ul class = "list-group">
+          {% for topic in topicsList %}
+            <li class = "list-group-item">{{ topic }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </form>
+  </div>
+
+{% endblock %}
