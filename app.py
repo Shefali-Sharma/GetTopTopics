@@ -16,7 +16,7 @@ def home():
 @app.route('/callback', methods = ['POST'])
 def callback():
     try:
-        with open("text.log",'w') as f:
+        with open("core/storeURL.txt",'w') as f:
             f.write(request.form['input'] + "\n")
         return render_template('home.html', topicsList = [])
     except:
@@ -26,7 +26,7 @@ def callback():
 @app.route('/data', methods = ['GET'])
 def getdata():
     try:
-        with open("text.log",'r') as f:
+        with open("core/storeURL.txt",'r') as f:
             a = list(Processing.top_keywords_from_url(f.readline().strip(),10).to_dict()["index"].values())
             if not a:
                 return render_template('home.html', topicsList = ErrorMessage)
