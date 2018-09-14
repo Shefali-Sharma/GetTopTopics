@@ -1,25 +1,49 @@
 from flask import Flask, render_template, request
 import processing
+import sys
 app = Flask(__name__)
 
 Topics = ["2 slice toaster","asda","asdad","ad", "aa"]
 
 @app.route('/')
 def home():
-    return render_template('layout.html', topicsList = [])
+    try:
+        return render_template('layout.html', topicsList = [])
+    except:
+        print ('Error encountered for this data: ' + str(sys.exc_info()[0]))
+        return render_template('layout.html', topicsList = [])
 
 @app.route('/callback', methods = ['POST'])
 def callback():
-    with open("text.log",'w') as f:
-        f.write(request.form['input'] + "\n")
-    # myInput = request.form['inputURL']
-    return render_template('layout.html', topicsList = Topics)
+    try:
+        with open("text.log",'w') as f:
+            f.write(request.form['input'] + "\n")
+        return render_template('layout.html', topicsList = Topics)
+    except:
+        print ('Error encountered for this data: ' + str(sys.exc_info()[0]))
+        return render_template('layout.html', topicsList = [])
 
 @app.route('/data', methods = ['GET'])
 def getdata():
-    with open("text.log",'r') as f:
-        a = list(processing.top_keywords_from_url(f.readline().strip(),10).to_dict()["index"].values())
-    return render_template('layout.html', topicsList = a)
+    try:
+        with open("text.log",'r') as f:
+            a = list(processing.top_keywords_from_url(f.readline().strip(),10).to_dict()["index"].values())
+            if not a:
+                return render_template('layout.html', topicsList = [])
+        return render_template('layout.html', topicsList = a)
+    except NameError as err:
+        print ('NameError in this data: ' + str(err))
+        return render_template('layout.html', topicsList = [])
+    except TypeError as err:
+        print ('TypeError in this data: ' + str(err))
+        return render_template('layout.html', topicsList = [])
+    except ValueError as err:
+        print ('ValueError in this data: ' + str(err))
+        return render_template('layout.html', topicsList = [])
+    except:
+        print ('Error encountered for this data: ' + str(sys.exc_info()[0]))
+        return render_template('layout.html', topicsList = [])
+
 
 if __name__ == '__main__':
     app.run(debug = True)
